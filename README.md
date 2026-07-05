@@ -2,12 +2,20 @@
 
 GitHub-ready Next.js store for Saint Meridian.
 
-## Setup
+## What is fixed
 
-1. Upload these files to your GitHub repository.
-2. In Vercel, make sure these environment variables are added:
-   - STRIPE_SECRET_KEY
-   - NEXT_PUBLIC_SITE_URL
-3. Redeploy the project in Vercel.
+- Customer Service opens directly inside the website.
+- No customer-service button redirects to Google.
+- Support agent answers order numbers, sizes, and delivery time questions.
+- Sizes: S, M, L, XL, XXL.
+- Order times: 3–5 business days.
+- Checkout uses `/api/checkout` and does not show checkout secrets on the website.
 
-Checkout posts to `/api/checkout`. No checkout secrets are displayed anywhere on the site.
+## Vercel setup
+
+Add these environment variables in Vercel:
+
+- `STRIPE_SECRET_KEY`
+- `NEXT_PUBLIC_SITE_URL`
+
+Then redeploy the project.

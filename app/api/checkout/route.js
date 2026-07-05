@@ -14,11 +14,11 @@ export async function POST(request) {
     const allowedSizes = ['S', 'M', 'L', 'XL', 'XXL'];
 
     if (!product || !allowedSizes.includes(size)) {
-      return Response.json({ error: 'Invalid product or size.' }, { status: 400 });
+      return Response.json({ error: 'Please select a valid product and size.' }, { status: 400 });
     }
 
     if (!process.env.STRIPE_SECRET_KEY) {
-      return Response.json({ error: 'Checkout is not configured yet.' }, { status: 500 });
+      return Response.json({ error: 'Checkout is not configured in Vercel yet.' }, { status: 500 });
     }
 
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -30,9 +30,7 @@ export async function POST(request) {
         {
           price_data: {
             currency: 'usd',
-            product_data: {
-              name: `${product.name} / Size ${size}`
-            },
+            product_data: { name: `${product.name} / Size ${size}` },
             unit_amount: product.price
           },
           quantity: 1
@@ -40,14 +38,11 @@ export async function POST(request) {
       ],
       success_url: `${siteUrl}/?success=true`,
       cancel_url: `${siteUrl}/?canceled=true`,
-      metadata: {
-        productId,
-        size
-      }
+      metadata: { productId, size }
     });
 
     return Response.json({ url: session.url });
-  } catch (error) {
-    return Response.json({ error: 'Checkout could not be started.' }, { status: 500 });
+  } catch {
+    return Response.json({ error: 'Checkout could not be started. Please try again.' }, { status: 500 });
   }
 }

@@ -1,9 +1,9 @@
 :root {
   --black: #050505;
   --white: #ffffff;
-  --soft: #f4f4f4;
+  --soft: #f5f5f5;
   --muted: #666666;
-  --line: #e8e8e8;
+  --line: #e7e7e7;
 }
 
 * { box-sizing: border-box; }
@@ -16,21 +16,23 @@ body {
 }
 a { color: inherit; text-decoration: none; }
 button, select, input { font: inherit; }
+button { cursor: pointer; }
 
 .nav {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 20;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 22px 6vw;
-  background: rgba(255,255,255,.92);
-  backdrop-filter: blur(14px);
+  background: rgba(255,255,255,.94);
   border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(14px);
 }
-.brand { font-size: 14px; letter-spacing: .28em; font-weight: 700; }
-.nav nav { display: flex; gap: 22px; font-size: 13px; text-transform: uppercase; letter-spacing: .12em; }
+.brand { font-size: 14px; letter-spacing: .28em; font-weight: 800; }
+.nav nav { display: flex; gap: 22px; align-items: center; font-size: 13px; text-transform: uppercase; letter-spacing: .12em; }
+.nav nav button { border: 0; background: transparent; text-transform: uppercase; letter-spacing: .12em; padding: 0; }
 
 .hero {
   min-height: 82vh;
@@ -39,12 +41,12 @@ button, select, input { font: inherit; }
   align-items: center;
   gap: 50px;
   padding: 60px 6vw;
-  background: linear-gradient(135deg, #ffffff 0%, #f7f7f7 100%);
+  background: linear-gradient(135deg, #fff 0%, #f7f7f7 100%);
 }
 .eyebrow, .sectionTitle p {
   letter-spacing: .22em;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--muted);
 }
 .hero h1 {
@@ -55,20 +57,22 @@ button, select, input { font: inherit; }
   letter-spacing: -.06em;
 }
 .heroCopy {
-  max-width: 520px;
+  max-width: 540px;
   margin: 26px 0;
   font-size: 18px;
   line-height: 1.7;
   color: #333;
 }
 .heroButton, .checkout, .chatForm button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   border: 1px solid var(--black);
   background: var(--black);
   color: var(--white);
   padding: 14px 22px;
   border-radius: 999px;
-  cursor: pointer;
-  font-weight: 700;
+  font-weight: 800;
 }
 .heroImage {
   background: var(--black);
@@ -80,12 +84,11 @@ button, select, input { font: inherit; }
   overflow: hidden;
   box-shadow: 0 30px 80px rgba(0,0,0,.16);
 }
-.heroImage img { width: 100%; height: 100%; object-fit: cover; }
+.heroImage img { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; }
 
 .trustBar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-block: 1px solid var(--line);
   background: var(--black);
   color: var(--white);
 }
@@ -101,11 +104,7 @@ button, select, input { font: inherit; }
 .shop { padding: 72px 6vw; }
 .sectionTitle { margin-bottom: 30px; }
 .sectionTitle h2 { margin: 0; font-size: clamp(32px, 4vw, 54px); letter-spacing: -.04em; }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 22px;
-}
+.grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
 .productCard {
   border: 1px solid var(--line);
   border-radius: 28px;
@@ -114,19 +113,14 @@ button, select, input { font: inherit; }
   box-shadow: 0 18px 50px rgba(0,0,0,.07);
 }
 .imageWrap {
-  height: 370px;
+  height: 390px;
   background: #f3f3f3;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
-.imageWrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  image-rendering: auto;
-}
+.imageWrap img { width: 100%; height: 100%; object-fit: contain; image-rendering: auto; }
 .productInfo { padding: 22px; }
 .productInfo span { font-size: 12px; letter-spacing: .16em; color: var(--muted); text-transform: uppercase; }
 .productInfo h3 { margin: 12px 0 8px; font-size: 20px; }
@@ -135,17 +129,17 @@ button, select, input { font: inherit; }
 .buyRow strong { font-size: 22px; }
 select { border: 1px solid var(--line); border-radius: 999px; padding: 10px 14px; background: #fff; }
 .checkout { width: 100%; border-radius: 14px; }
-.checkout:disabled { opacity: .7; cursor: wait; }
+.checkout:disabled { opacity: .65; cursor: wait; }
 
-.support {
+.supportBox {
   margin: 0 6vw 70px;
   padding: 46px;
   border-radius: 32px;
   background: var(--black);
   color: var(--white);
 }
-.support h2 { margin: 0 0 10px; font-size: 36px; }
-.support p { max-width: 780px; color: #ddd; line-height: 1.7; }
+.supportBox h2 { margin: 0 0 10px; font-size: 36px; }
+.supportBox p { max-width: 820px; color: #ddd; line-height: 1.7; }
 footer {
   padding: 34px 6vw;
   display: flex;
@@ -158,22 +152,21 @@ footer {
   position: fixed;
   right: 22px;
   bottom: 22px;
-  z-index: 40;
+  z-index: 70;
   border: 1px solid var(--black);
   background: var(--black);
   color: var(--white);
   border-radius: 999px;
   padding: 16px 20px;
-  font-weight: 800;
+  font-weight: 900;
   box-shadow: 0 20px 50px rgba(0,0,0,.22);
-  cursor: pointer;
 }
 .chatPanel {
   position: fixed;
   right: 22px;
   bottom: 88px;
   width: min(390px, calc(100vw - 44px));
-  z-index: 50;
+  z-index: 80;
   border: 1px solid var(--line);
   border-radius: 24px;
   overflow: hidden;
@@ -189,11 +182,11 @@ footer {
   color: var(--white);
 }
 .chatHeader span { display: block; margin-top: 4px; color: #d0d0d0; font-size: 12px; }
-.chatHeader button { background: transparent; border: 0; color: white; font-size: 24px; cursor: pointer; }
-.chatBody { height: 280px; overflow: auto; padding: 16px; background: #fafafa; }
+.chatHeader button { background: transparent; border: 0; color: white; font-size: 24px; }
+.chatBody { height: 290px; overflow: auto; padding: 16px; background: #fafafa; }
 .chatBody p { padding: 12px 14px; border-radius: 16px; line-height: 1.45; margin: 0 0 10px; }
-.agent { background: #fff; border: 1px solid var(--line); }
-.customer { background: var(--black); color: var(--white); margin-left: 40px !important; }
+.agentMessage { background: #fff; border: 1px solid var(--line); color: var(--black); }
+.customerMessage { background: var(--black); color: var(--white); margin-left: 40px !important; }
 .chatForm { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--line); }
 .chatForm input { flex: 1; border: 1px solid var(--line); border-radius: 999px; padding: 12px 14px; min-width: 0; }
 .chatForm button { padding: 12px 16px; }
