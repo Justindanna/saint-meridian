@@ -1,5 +1,5 @@
 {
-  "name": "saint-meridian-full-website",
+  "name": "saint-meridian-store",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -14,9 +14,7 @@
     "stripe": "latest"
   },
   "devDependencies": {
-    "typescript": "latest",
-    "@types/node": "latest",
-    "@types/react": "latest",
-    "@types/react-dom": "latest"
+    "eslint": "latest",
+    "eslint-config-next": "latest"
   }
 }

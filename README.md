@@ -1,28 +1,13 @@
-# Saint Meridian Full Website
+# Saint Meridian Store
 
-GitHub/Vercel-ready Next.js storefront.
+GitHub-ready Next.js store for Saint Meridian.
 
-## Correct upload structure
+## Setup
 
-Upload the extracted folder contents while preserving folders:
+1. Upload these files to your GitHub repository.
+2. In Vercel, make sure these environment variables are added:
+   - STRIPE_SECRET_KEY
+   - NEXT_PUBLIC_SITE_URL
+3. Redeploy the project in Vercel.
 
-- `app/`
-- `public/`
-- `package.json`
-- `next.config.js`
-- `next-env.d.ts`
-- `tsconfig.json`
-- `README.md`
-
-Do not move files out of `app` or `public`.
-
-## Pricing
-
-- Saint Meridian Hoodie - White: $398
-- Saint Meridian Hoodie - Black: $318
-- Saint Meridian T-Shirt White: $318
-- Saint Meridian T-Shirt black: $318
-
-## Checkout
-
-The checkout route uses Stripe and reads `STRIPE_SECRET_KEY` from Vercel Environment Variables. It does not store API keys in GitHub.
+Checkout posts to `/api/checkout`. No checkout secrets are displayed anywhere on the site.
