@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Saint Meridian</title>
+  <meta name="description" content="Saint Meridian black and white streetwear." />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="#top">SAINT MERIDIAN</a>
+    <nav>
+      <a href="#shop">Shop</a>
+      <a href="#support">Support</a>
+      <a href="#cart">Checkout</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <p class="eyebrow">Luxury streetwear</p>
+      <h1>Polished essentials in black and white.</h1>
+      <p class="subtext">Saint Meridian test drop featuring the current hoodie and T-shirt collection.</p>
+      <a class="primary" href="#shop">Shop collection</a>
+    </section>
+
+    <section id="shop" class="section">
+      <div class="section-head">
+        <p class="eyebrow">Collection</p>
+        <h2>Featured products</h2>
+      </div>
+      <div id="products" class="grid"></div>
+    </section>
+
+    <section id="cart" class="cart-section">
+      <div>
+        <p class="eyebrow light">Secure checkout</p>
+        <h2>Your cart</h2>
+        <p id="cart-status">Your cart is currently empty.</p>
+      </div>
+      <div class="cart-box">
+        <div id="cart-items"></div>
+        <div class="total-row"><span>Total</span><strong id="cart-total">$0</strong></div>
+        <button id="checkout-button" class="checkout" disabled>Checkout</button>
+        <p class="safe-note">Secure checkout opens after an item is added. No API keys are shown on this site.</p>
+      </div>
+    </section>
+
+    <section id="support" class="support-section">
+      <p class="eyebrow">Customer service</p>
+      <h2>Professional support, built in.</h2>
+      <p>The customer service agent can answer questions about shirt sizes, order numbers, delivery timing, checkout, returns, and product details.</p>
+    </section>
+  </main>
+
+  <button id="support-toggle" class="support-toggle" type="button">Customer Support</button>
+  <aside id="chat" class="chat" aria-hidden="true">
+    <div class="chat-head">
+      <div>
+        <strong>Saint Meridian Support</strong>
+        <p>Professional customer care</p>
+      </div>
+      <button id="close-chat" type="button">×</button>
+    </div>
+    <div id="messages" class="messages"></div>
+    <form id="chat-form" class="chat-form">
+      <input id="chat-input" placeholder="Ask about sizes, order #, delivery..." autocomplete="off" />
+      <button type="submit">Send</button>
+    </form>
+  </aside>
+
+  <footer>© 2026 Saint Meridian. All rights reserved.</footer>
+  <script src="/app.js"></script>
+</body>
+</html>
