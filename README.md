@@ -1,21 +1,17 @@
-# Saint Meridian Deploy-Ready Site
+# Saint Meridian Store
 
-This is a Vercel-ready static storefront with a serverless Stripe checkout endpoint.
+Deploy-ready Next.js/Vercel storefront.
 
-## Important
-Upload these extracted files to GitHub. This project intentionally has **no package.json** and **no package-lock.json** so Vercel does not run npm install.
+Includes:
+- `app/` directory so Vercel Next build works
+- high-quality product images in `public/images`
+- on-site customer service chat, no Google redirect
+- sizes S, M, L, XL, XXL
+- Stripe checkout route at `/api/checkout`
+- T-shirts $75, hoodies $100
 
-## Files included
-- index.html
-- styles.css
-- app.js
-- vercel.json
-- api/checkout.js
-- public/images/product images
+Vercel Environment Variables needed:
+- `STRIPE_SECRET_KEY`
+- `NEXT_PUBLIC_SITE_URL` = `https://saint-meridian.com`
 
-## Vercel environment variables
-Keep these inside Vercel only:
-- STRIPE_SECRET_KEY
-- NEXT_PUBLIC_SITE_URL = https://saint-meridian.com
-
-No API keys are shown on the website.
+Upload all extracted files and folders to GitHub and commit directly to main.
