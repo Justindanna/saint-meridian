@@ -186,7 +186,7 @@ export default function Home() {
 
       <section id="top" className="heroSection">
         <div className="heroCopy">
-          <p className="eyebrow">TEST DROP / BLACK & WHITE</p>
+          <p className="eyebrow">TEST DROP / NO GOOGLE SUPPORT FIX</p>
           <h1>Premium essentials. Clean presentation.</h1>
           <p>Saint Meridian is built for a simple, sharp shopping experience with high-quality product imagery, direct checkout, and on-site support.</p>
           <div className="heroActions">

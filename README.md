@@ -1,21 +1,13 @@
-# Saint Meridian Store
+# Saint Meridian — NO GOOGLE Customer Service Fix
 
-GitHub-ready Next.js store for Saint Meridian.
+This version has the support chat built directly into the website.
 
-## What is included
+Important proof:
+- There is no Email support button.
+- There is no mailto link.
+- There is no Google redirect.
+- Customer Service opens an on-site chat panel.
+- Sizes: S, M, L, XL, XXL.
+- Delivery timing: 3–5 business days.
 
-- High-quality product images in `public/images`
-- Black and white premium storefront design
-- Size buttons: S, M, L, XL, XXL
-- On-site customer service chat, no Google redirect
-- Checkout route at `/api/checkout`
-- No Stripe API keys shown anywhere on the website
-
-## Vercel setup
-
-Add these environment variables inside Vercel:
-
-- `STRIPE_SECRET_KEY`
-- `NEXT_PUBLIC_SITE_URL`
-
-Then redeploy the project.
+Upload the CONTENTS of this folder to GitHub, commit to main, then redeploy on Vercel.
