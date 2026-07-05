@@ -3,10 +3,10 @@
 import { useMemo, useState } from 'react';
 
 const products = [
-  { id: 'black-hoodie', name: 'Saint Meridian Hoodie - Black', price: 100, image: '/images/black-hoodie.png', description: 'Heavyweight black hoodie with the Saint Meridian mark.' },
-  { id: 'white-hoodie', name: 'Saint Meridian Hoodie - White', price: 100, image: '/images/white-hoodie.png', description: 'Heavyweight white hoodie with the Saint Meridian mark.' },
-  { id: 'black-tee', name: 'Saint Meridian T-Shirt - Black', price: 75, image: '/images/black-tee.png', description: 'Clean black premium T-shirt with Saint Meridian branding.' },
-  { id: 'white-tee', name: 'Saint Meridian T-Shirt - White', price: 75, image: '/images/white-tee.png', description: 'Clean white premium T-shirt with Saint Meridian branding.' }
+  { id: 'black-hoodie', name: 'Saint Meridian Hoodie - Black', price: 318, image: '/images/black-hoodie.png', description: 'Heavyweight black hoodie with the Saint Meridian mark.' },
+  { id: 'white-hoodie', name: 'Saint Meridian Hoodie - White', price: 398, image: '/images/white-hoodie.png', description: 'Heavyweight white hoodie with the Saint Meridian mark.' },
+  { id: 'black-tee', name: 'Saint Meridian T-Shirt - Black', price: 318, image: '/images/black-tee.png', description: 'Clean black premium T-shirt with Saint Meridian branding.' },
+  { id: 'white-tee', name: 'Saint Meridian T-Shirt - White', price: 318, image: '/images/white-tee.png', description: 'Clean white premium T-shirt with Saint Meridian branding.' }
 ];
 
 const sizes = ['S', 'M', 'L', 'XL', 'XXL'];

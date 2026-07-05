@@ -1,10 +1,10 @@
 import Stripe from 'stripe';
 
 const products = {
-  'black-hoodie': { name: 'Saint Meridian Hoodie - Black', price: 10000 },
-  'white-hoodie': { name: 'Saint Meridian Hoodie - White', price: 10000 },
-  'black-tee': { name: 'Saint Meridian T-Shirt - Black', price: 7500 },
-  'white-tee': { name: 'Saint Meridian T-Shirt - White', price: 7500 }
+  'black-hoodie': { name: 'Saint Meridian Hoodie - Black', price: 31800 },
+  'white-hoodie': { name: 'Saint Meridian Hoodie - White', price: 39800 },
+  'black-tee': { name: 'Saint Meridian T-Shirt - Black', price: 31800 },
+  'white-tee': { name: 'Saint Meridian T-Shirt - White', price: 31800 }
 };
 
 export async function POST(request) {
