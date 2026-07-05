@@ -2,7 +2,7 @@ import './globals.css';
 
 export const metadata = {
   title: 'Saint Meridian',
-  description: 'Premium black and white essentials from Saint Meridian.'
+  description: 'Premium black and white streetwear by Saint Meridian.'
 };
 
 export default function RootLayout({ children }) {
