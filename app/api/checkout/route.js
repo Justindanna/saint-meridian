@@ -14,7 +14,11 @@ export async function POST(request) {
     }
 
     const body = await request.json();
-    const cart = Array.isArray(body.cart) ? body.cart : [];
+    const cart = Array.isArray(body.cart)
+  ? body.cart
+  : Array.isArray(body.items)
+    ? body.items
+    : [];
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://saint-meridian.com';
 
     const line_items = cart.map((item) => {
