@@ -2,18 +2,18 @@
 
 GitHub-ready Next.js store for Saint Meridian.
 
-## What is fixed
+## What is included
 
-- Customer Service opens directly inside the website.
-- No customer-service button redirects to Google.
-- Support agent answers order numbers, sizes, and delivery time questions.
-- Sizes: S, M, L, XL, XXL.
-- Order times: 3–5 business days.
-- Checkout uses `/api/checkout` and does not show checkout secrets on the website.
+- High-quality product images in `public/images`
+- Black and white premium storefront design
+- Size buttons: S, M, L, XL, XXL
+- On-site customer service chat, no Google redirect
+- Checkout route at `/api/checkout`
+- No Stripe API keys shown anywhere on the website
 
 ## Vercel setup
 
-Add these environment variables in Vercel:
+Add these environment variables inside Vercel:
 
 - `STRIPE_SECRET_KEY`
 - `NEXT_PUBLIC_SITE_URL`

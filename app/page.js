@@ -1,64 +1,76 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
 
 const products = [
   {
     id: 'black-hoodie',
-    name: 'Saint Meridian Hoodie — Black',
+    name: 'Black Hoodie',
+    fullName: 'Saint Meridian Hoodie — Black',
     price: 100,
     image: '/images/black-hoodie.png',
     type: 'Hoodie',
-    description: 'Premium black hoodie with the Saint Meridian mark.'
+    fit: 'Oversized heavyweight fit',
+    description: 'Premium black hoodie with a clean Saint Meridian chest mark.'
   },
   {
     id: 'white-hoodie',
-    name: 'Saint Meridian Hoodie — White',
+    name: 'White Hoodie',
+    fullName: 'Saint Meridian Hoodie — White',
     price: 100,
     image: '/images/white-hoodie.png',
     type: 'Hoodie',
-    description: 'Clean white hoodie with a refined Saint Meridian front print.'
+    fit: 'Oversized heavyweight fit',
+    description: 'Bright white hoodie with a sharp black Saint Meridian print.'
   },
   {
     id: 'black-tee',
-    name: 'Saint Meridian T-Shirt — Black',
+    name: 'Black Tee',
+    fullName: 'Saint Meridian T-Shirt — Black',
     price: 75,
     image: '/images/black-tee.png',
     type: 'T-Shirt',
-    description: 'Black oversized tee made for a polished everyday fit.'
+    fit: 'Box tee silhouette',
+    description: 'Black box tee with the Saint Meridian mark centered on the chest.'
   },
   {
     id: 'white-tee',
-    name: 'Saint Meridian T-Shirt — White',
+    name: 'White Tee',
+    fullName: 'Saint Meridian T-Shirt — White',
     price: 75,
     image: '/images/white-tee.png',
     type: 'T-Shirt',
-    description: 'White oversized tee featuring the Saint Meridian logo.'
+    fit: 'Box tee silhouette',
+    description: 'White box tee with the Saint Meridian logo in a clean luxury layout.'
   }
 ];
 
-function getSupportAnswer(value) {
+function supportReply(value) {
   const text = value.toLowerCase();
 
-  if (text.includes('order') || text.includes('number') || text.includes('#')) {
-    return 'Of course. Please send your order number, and our support team can review it. Standard Saint Meridian order times are 3–5 business days.';
+  if (text.includes('order') || text.includes('number') || text.includes('track') || text.includes('#')) {
+    return 'Of course. Please enter your order number and we can help review it. Saint Meridian order timing is typically 3–5 business days.';
   }
 
-  if (text.includes('size') || text.includes('s ') || text.includes('small') || text.includes('medium') || text.includes('large') || text.includes('xl') || text.includes('xxl')) {
-    return 'Saint Meridian sizes are S, M, L, XL, and XXL. For a more relaxed fit, we recommend sizing up.';
+  if (text.includes('size') || text.includes('sizing') || text.includes('small') || text.includes('medium') || text.includes('large') || text.includes('xl') || text.includes('xxl') || ['s', 'm', 'l'].includes(text.trim())) {
+    return 'Saint Meridian currently offers sizes S, M, L, XL, and XXL. For a relaxed fit, choose your normal size. For a roomier oversized fit, size up.';
   }
 
   if (text.includes('shipping') || text.includes('delivery') || text.includes('arrive') || text.includes('time') || text.includes('long')) {
-    return 'Order times are typically 3–5 business days. We appreciate your patience while your item is prepared.';
+    return 'Saint Meridian order times are typically 3–5 business days. You will receive order updates after checkout.';
   }
 
   if (text.includes('return') || text.includes('refund') || text.includes('exchange')) {
-    return 'I can help with that. Please include your order number and a short description of the issue so our support team can review it professionally.';
+    return 'I can help with that. Please include your order number and a brief description of the issue so support can review it professionally.';
   }
 
-  return 'Thank you for contacting Saint Meridian. I can help with order numbers, sizing, and order timing. Sizes are S, M, L, XL, and XXL. Order times are 3–5 business days.';
+  if (text.includes('hello') || text.includes('hi') || text.includes('hey')) {
+    return 'Hello. Thank you for reaching out to Saint Meridian. I can help with sizing, order numbers, and delivery timing.';
+  }
+
+  return 'Thank you for contacting Saint Meridian Support. I can help with order numbers, sizes S–XXL, and order timing. Standard order timing is 3–5 business days.';
 }
 
 function CustomerServiceAgent() {
@@ -72,50 +84,40 @@ function CustomerServiceAgent() {
     event.preventDefault();
     const clean = input.trim();
     if (!clean) return;
-
-    setMessages((current) => [
-      ...current,
-      { from: 'customer', text: clean },
-      { from: 'agent', text: getSupportAnswer(clean) }
-    ]);
+    setMessages((current) => [...current, { from: 'customer', text: clean }, { from: 'agent', text: supportReply(clean) }]);
     setInput('');
   }
 
   return (
     <>
-      <button type="button" className="chatButton" onClick={() => setOpen(true)}>
+      <button type="button" className="chatLaunch" onClick={() => setOpen((current) => !current)}>
         Customer Service
       </button>
-
-      {open ? (
-        <div className="chatPanel" role="dialog" aria-label="Saint Meridian customer service chat">
+      {open && (
+        <section className="chatPanel" aria-label="Saint Meridian customer service chat">
           <div className="chatHeader">
             <div>
               <strong>Saint Meridian Support</strong>
-              <span>Professional customer care</span>
+              <span>Online now</span>
             </div>
             <button type="button" aria-label="Close customer service" onClick={() => setOpen(false)}>×</button>
           </div>
-
+          <div className="quickHelp">
+            <button type="button" onClick={() => setMessages((m) => [...m, { from: 'customer', text: 'What sizes do you have?' }, { from: 'agent', text: supportReply('sizes') }])}>Sizes</button>
+            <button type="button" onClick={() => setMessages((m) => [...m, { from: 'customer', text: 'How long does delivery take?' }, { from: 'agent', text: supportReply('delivery time') }])}>Delivery</button>
+            <button type="button" onClick={() => setMessages((m) => [...m, { from: 'customer', text: 'I have an order number' }, { from: 'agent', text: supportReply('order number') }])}>Order #</button>
+          </div>
           <div className="chatBody">
             {messages.map((message, index) => (
-              <p key={index} className={message.from === 'agent' ? 'agentMessage' : 'customerMessage'}>
-                {message.text}
-              </p>
+              <p key={`${message.from}-${index}`} className={message.from === 'agent' ? 'agentMessage' : 'customerMessage'}>{message.text}</p>
             ))}
           </div>
-
           <form className="chatForm" onSubmit={sendMessage}>
-            <input
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-              placeholder="Ask about orders, sizes, or delivery"
-              aria-label="Customer service message"
-            />
+            <input value={input} onChange={(event) => setInput(event.target.value)} placeholder="Ask about orders, sizes, or delivery" />
             <button type="submit">Send</button>
           </form>
-        </div>
-      ) : null}
+        </section>
+      )}
     </>
   );
 }
@@ -125,20 +127,18 @@ function ProductCard({ product }) {
   const [loading, setLoading] = useState(false);
 
   async function checkout() {
+    setLoading(true);
     try {
-      setLoading(true);
       const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productId: product.id, size })
       });
       const data = await response.json();
-
       if (data?.url) {
         window.location.href = data.url;
         return;
       }
-
       alert(data?.error || 'Checkout is not available yet.');
     } catch {
       alert('Checkout could not start. Please try again.');
@@ -149,74 +149,91 @@ function ProductCard({ product }) {
 
   return (
     <article className="productCard">
-      <div className="imageWrap">
-        <img src={product.image} alt={product.name} />
+      <div className="productImageBox">
+        <img src={product.image} alt={product.fullName} loading="eager" decoding="async" />
       </div>
-      <div className="productInfo">
-        <span>{product.type}</span>
-        <h3>{product.name}</h3>
+      <div className="productContent">
+        <div className="productMeta"><span>{product.type}</span><span>{product.fit}</span></div>
+        <h3>{product.fullName}</h3>
         <p>{product.description}</p>
-        <div className="buyRow">
-          <strong>${product.price}</strong>
-          <select value={size} onChange={(event) => setSize(event.target.value)} aria-label={`Select size for ${product.name}`}>
-            {sizes.map((sizeOption) => <option key={sizeOption} value={sizeOption}>{sizeOption}</option>)}
-          </select>
+        <div className="sizeRow" role="radiogroup" aria-label={`Select size for ${product.fullName}`}>
+          {sizes.map((option) => (
+            <button key={option} type="button" className={size === option ? 'activeSize' : ''} onClick={() => setSize(option)}>{option}</button>
+          ))}
         </div>
-        <button type="button" className="checkout" onClick={checkout} disabled={loading}>
-          {loading ? 'Starting checkout...' : 'Checkout'}
-        </button>
+        <div className="purchaseRow">
+          <strong>${product.price}</strong>
+          <button type="button" className="checkoutButton" onClick={checkout} disabled={loading}>{loading ? 'Starting…' : 'Checkout'}</button>
+        </div>
       </div>
     </article>
   );
 }
 
 export default function Home() {
+  const featured = useMemo(() => products.slice(0, 4), []);
+
   return (
     <main>
-      <header className="nav">
-        <div className="brand">SAINT MERIDIAN</div>
+      <header className="navBar">
+        <a className="brand" href="#top" aria-label="Saint Meridian home">SAINT MERIDIAN</a>
         <nav>
           <a href="#shop">Shop</a>
-          <button type="button" onClick={() => document.querySelector('.chatButton')?.click()}>Support</button>
+          <a href="#details">Details</a>
+          <button type="button" onClick={() => document.querySelector('.chatLaunch')?.click()}>Support</button>
         </nav>
       </header>
 
-      <section className="hero">
-        <div className="heroText">
-          <p className="eyebrow">TEST DROP</p>
-          <h1>Black and white essentials.</h1>
-          <p className="heroCopy">A clean Saint Meridian shopping experience with premium product presentation, simple sizing, and easy checkout.</p>
-          <a className="heroButton" href="#shop">Shop the drop</a>
+      <section id="top" className="heroSection">
+        <div className="heroCopy">
+          <p className="eyebrow">TEST DROP / BLACK & WHITE</p>
+          <h1>Premium essentials. Clean presentation.</h1>
+          <p>Saint Meridian is built for a simple, sharp shopping experience with high-quality product imagery, direct checkout, and on-site support.</p>
+          <div className="heroActions">
+            <a href="#shop">Shop now</a>
+            <button type="button" onClick={() => document.querySelector('.chatLaunch')?.click()}>Ask support</button>
+          </div>
         </div>
-        <div className="heroImage">
-          <img src="/images/black-hoodie.png" alt="Saint Meridian black hoodie" />
+        <div className="heroGallery" aria-label="Saint Meridian products">
+          {featured.map((product, index) => (
+            <div className={`heroTile heroTile${index + 1}`} key={product.id}>
+              <img src={product.image} alt={product.fullName} loading="eager" decoding="async" />
+            </div>
+          ))}
         </div>
       </section>
 
-      <section className="trustBar" aria-label="Store details">
-        <span>Sizes S–XXL</span>
-        <span>3–5 business days</span>
-        <span>Professional support</span>
+      <section className="storeStrip">
+        <span>Sizes S / M / L / XL / XXL</span>
+        <span>Order timing 3–5 business days</span>
+        <span>Customer service stays on site</span>
       </section>
 
-      <section id="shop" className="shop">
-        <div className="sectionTitle">
-          <p>SHOP</p>
-          <h2>Saint Meridian essentials</h2>
+      <section id="shop" className="shopSection">
+        <div className="sectionHeading">
+          <p className="eyebrow">SHOP THE DROP</p>
+          <h2>High-quality Saint Meridian mockups</h2>
         </div>
-        <div className="grid">
+        <div className="productGrid">
           {products.map((product) => <ProductCard key={product.id} product={product} />)}
         </div>
       </section>
 
-      <section className="supportBox">
-        <h2>Need help?</h2>
-        <p>Use the Customer Service button at the bottom-right. The agent answers questions about order numbers, shirt sizes, and delivery times directly on this website.</p>
+      <section id="details" className="detailsSection">
+        <div>
+          <p className="eyebrow">SERVICE</p>
+          <h2>Built for simple support.</h2>
+        </div>
+        <div className="detailCards">
+          <article><h3>Sizes</h3><p>All current products list sizes S, M, L, XL, and XXL.</p></article>
+          <article><h3>Orders</h3><p>The support agent can ask for and respond to order-number questions.</p></article>
+          <article><h3>Timing</h3><p>Customers are told order timing is typically 3–5 business days.</p></article>
+        </div>
       </section>
 
-      <footer>
+      <footer className="footer">
         <strong>SAINT MERIDIAN</strong>
-        <span>Minimal essentials in black and white.</span>
+        <span>Black and white essentials.</span>
       </footer>
 
       <CustomerServiceAgent />

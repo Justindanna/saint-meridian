@@ -18,7 +18,7 @@ export async function POST(request) {
     }
 
     if (!process.env.STRIPE_SECRET_KEY) {
-      return Response.json({ error: 'Checkout is not configured in Vercel yet.' }, { status: 500 });
+      return Response.json({ error: 'Checkout is not configured yet. Add STRIPE_SECRET_KEY in Vercel.' }, { status: 500 });
     }
 
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -42,7 +42,7 @@ export async function POST(request) {
     });
 
     return Response.json({ url: session.url });
-  } catch {
+  } catch (error) {
     return Response.json({ error: 'Checkout could not be started. Please try again.' }, { status: 500 });
   }
 }
