@@ -39,6 +39,7 @@ const products = [
 
 export default function Home() {
   const [cart, setCart] = useState([]);
+  const [supportOpen, setSupportOpen] = useState(false);
   const [sizes, setSizes] = useState({});
   const total = useMemo(() => cart.reduce((sum, item) => sum + item.price, 0), [cart]);
 
@@ -129,7 +130,20 @@ export default function Home() {
         <p>Ask about sizes, order numbers, delivery timing, checkout, returns, and product details.</p>
       </section>
 
-      <button className="support-pill">Customer Support<br /><span>Chat with us</span></button>
+      <button className="support-pill" onClick={() => setSupportOpen(!supportOpen)} aria-expanded={supportOpen} aria-controls="support-chat">Customer Support<br /><span>Chat with us</span></button>
+      {supportOpen && (
+        <div className="support-chat" id="support-chat" role="dialog" aria-label="Customer support chat">
+          <div className="support-chat-head">
+            <strong>Saint Meridian Support</strong>
+            <button onClick={() => setSupportOpen(false)} aria-label="Close customer support">×</button>
+          </div>
+          <p>Hi — how can we help?</p>
+          <button onClick={() => alert('Sizing help: T-shirts and hoodies run true to size. Choose your normal size, or size up for an oversized fit.')}>Sizing help</button>
+          <button onClick={() => alert('Order help: After checkout, use your Stripe receipt email and order number for support.')}>Order help</button>
+          <button onClick={() => alert('Delivery timing: Shipping updates will be sent to the email used at checkout.')}>Delivery timing</button>
+          <a href="mailto:support@saint-meridian.com?subject=Saint%20Meridian%20Support">Email support</a>
+        </div>
+      )}
       <footer>© 2026 Saint Meridian. All rights reserved.</footer>
     </main>
   );

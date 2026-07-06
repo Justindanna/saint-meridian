@@ -172,7 +172,8 @@ button, select { font: inherit; }
 .support-pill {
   position: fixed;
   right: 28px;
-  top: 49%;
+  bottom: 28px;
+  z-index: 20;
   border: 0;
   border-radius: 999px;
   background: #000;
@@ -184,6 +185,52 @@ button, select { font: inherit; }
   box-shadow: 0 15px 45px rgba(0,0,0,.28);
 }
 .support-pill span { font-size: 11px; }
+.support-chat {
+  position: fixed;
+  right: 28px;
+  bottom: 104px;
+  z-index: 21;
+  width: min(340px, calc(100vw - 36px));
+  background: #fff;
+  color: #050505;
+  border: 1px solid #dedbd3;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.22);
+}
+.support-chat-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.support-chat-head button {
+  border: 0;
+  background: #000;
+  color: #fff;
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+.support-chat p {
+  color: #68645f;
+  margin: 0 0 12px;
+}
+.support-chat button, .support-chat a {
+  display: block;
+  width: 100%;
+  border: 1px solid #dedbd3;
+  border-radius: 999px;
+  background: #f4f3ef;
+  color: #050505;
+  text-align: center;
+  padding: 12px 14px;
+  margin-top: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
 footer {
   border-top: 1px solid #dfdcd5;
   padding: 30px 40px;
@@ -202,5 +249,6 @@ footer {
   .grid { grid-template-columns: 1fr; }
   .collection, .cart, .support { padding-left: 18px; padding-right: 18px; }
   .hero h1 { letter-spacing: -3px; }
-  .support-pill { right: 14px; padding: 14px 18px; }
+  .support-pill { right: 14px; bottom: 14px; padding: 14px 18px; }
+  .support-chat { right: 14px; bottom: 86px; }
 }
