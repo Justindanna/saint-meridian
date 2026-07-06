@@ -2,13 +2,15 @@
 
 GitHub-ready Next.js website.
 
-Latest customer service update:
-- Customer service can answer: "What size shirts do you sell?"
-- Answer: Small, Medium, Large, XL, and XXL
-- Support agent stays simple, friendly, and professional
-- No preset customer service buttons
-- Checkout and product mockups preserved
-- T-shirts remain $50
-- Hoodies remain $80
+Latest update:
+- Replaced only the four product images with the newest uploaded mockups:
+  - Black hoodie
+  - White hoodie
+  - Black T-shirt
+  - White T-shirt
+- Existing layout preserved
+- Checkout preserved
+- Customer service agent preserved
+- Prices preserved
 
-Upload the extracted contents to GitHub, commit to `main`, and Vercel should redeploy automatically.
+Upload the extracted contents to GitHub, commit to `main`, then Vercel should redeploy automatically.
