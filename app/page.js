@@ -15,7 +15,7 @@ export default function Home() {
   const [supportOpen, setSupportOpen] = useState(false);
   const [supportInput, setSupportInput] = useState('');
   const [messages, setMessages] = useState([
-    { role: 'assistant', text: 'Hi. Welcome to Saint Meridian support. How can we help you today?' }
+    { role: 'assistant', text: 'Welcome to Saint Meridian Customer Support. I can help with sizing, orders, shipping, delivery, returns, and general product questions. How can I assist you today?' }
   ]);
 
   const addToCart = (product) => {
@@ -27,11 +27,32 @@ export default function Home() {
 
   const reply = (text) => {
     const lower = text.toLowerCase();
-    if (lower.includes('size') || lower.includes('fit')) return 'For a regular fit, choose your normal size. For an oversized streetwear fit, size up once.';
-    if (lower.includes('order') || lower.includes('tracking')) return 'For order help, send your order number and checkout email so support can check the status.';
-    if (lower.includes('delivery') || lower.includes('shipping')) return 'Delivery timing depends on fulfillment and carrier updates. Use your confirmation email for the latest tracking details.';
-    if (lower.includes('return') || lower.includes('exchange') || lower.includes('refund')) return 'For returns or exchanges, include your order number, item name, and reason for the request.';
-    return 'Thanks. Please include any order number, product name, size, or checkout email if this is about an order.';
+
+    if (lower.includes('size') || lower.includes('fit') || lower.includes('small') || lower.includes('medium') || lower.includes('large') || lower.includes('xl')) {
+      return 'I’d be happy to help with sizing. Tell me your height, weight, and whether you prefer a regular or oversized fit, and I’ll recommend the best size.';
+    }
+
+    if (lower.includes('order') || lower.includes('tracking') || lower.includes('track') || lower.includes('status') || lower.includes('number')) {
+      return 'Please provide your order number and the email address used during checkout so I can help you with your order.';
+    }
+
+    if (lower.includes('delivery') || lower.includes('shipping') || lower.includes('ship') || lower.includes('arrive')) {
+      return 'Once your order ships, you’ll receive a confirmation email with tracking information. Delivery times vary depending on your location.';
+    }
+
+    if (lower.includes('return') || lower.includes('exchange') || lower.includes('refund')) {
+      return 'Items may be returned only if they are in their original condition. Items that have been worn, washed, damaged, or altered cannot be returned or exchanged. Please provide your order number if you’d like to request a return.';
+    }
+
+    if (lower.includes('payment') || lower.includes('checkout') || lower.includes('stripe') || lower.includes('card')) {
+      return 'All payments are processed securely through Stripe using encrypted payment processing.';
+    }
+
+    if (lower.includes('hoodie') || lower.includes('shirt') || lower.includes('product') || lower.includes('material')) {
+      return 'Saint Meridian offers premium T-shirts and hoodies in clean black and white styles. Let me know which item you’re asking about and I’ll help.';
+    }
+
+    return 'I’d be happy to help. Please tell me if your question is about sizing, an order number, shipping, delivery, returns, payment, or a product.';
   };
 
   const sendMessage = (quickText) => {
@@ -114,13 +135,6 @@ export default function Home() {
           <div className="chatHeader"><div className="chatTitle"><span className="onlineDot"></span><div><strong>Customer Support</strong><small>Online</small></div></div><button onClick={() => setSupportOpen(false)}>—</button></div>
           <div className="chatBody">
             {messages.map((m, i) => <div className={`chatBubble ${m.role}`} key={i}>{m.text}</div>)}
-            <div className="quickActions">
-              <button onClick={() => sendMessage('What size should I order?')}>What size should I order?</button>
-              <button onClick={() => sendMessage('Order status / tracking')}>Order status / tracking</button>
-              <button onClick={() => sendMessage('Delivery time')}>Delivery time</button>
-              <button onClick={() => sendMessage('Returns & exchanges')}>Returns & exchanges</button>
-              <button onClick={() => sendMessage('Other question')}>Other question</button>
-            </div>
           </div>
           <div className="chatInput"><input value={supportInput} onChange={(e) => setSupportInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') sendMessage(); }} placeholder="Type your message..." /><button onClick={() => sendMessage()}>➜</button></div>
           <p className="chatNote">We typically reply in a few minutes.</p>
