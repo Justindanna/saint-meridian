@@ -1,49 +1,42 @@
 import Stripe from 'stripe';
 
 const products = {
-  'black-hoodie': { name: 'Saint Meridian Hoodie - Black', price: 31800 },
-  'white-hoodie': { name: 'Saint Meridian Hoodie - White', price: 39800 },
-  'black-tee': { name: 'Saint Meridian T-Shirt - Black', price: 31800 },
-  'white-tee': { name: 'Saint Meridian T-Shirt - White', price: 31800 }
+  'saint-meridian-hoodie-black': { name: 'Saint Meridian Hoodie - Black', price: 8000 },
+  'saint-meridian-hoodie-white': { name: 'Saint Meridian Hoodie - White', price: 8000 },
+  'saint-meridian-shirt-black': { name: 'Saint Meridian T-Shirt - Black', price: 5000 },
+  'saint-meridian-shirt-white': { name: 'Saint Meridian T-Shirt - White', price: 5000 }
 };
 
 export async function POST(request) {
   try {
     if (!process.env.STRIPE_SECRET_KEY) {
-      return Response.json({ error: 'Stripe secret key is missing in Vercel Environment Variables.' }, { status: 500 });
+      return Response.json({ error: 'Stripe secret key is not set in Vercel.' }, { status: 500 });
     }
 
-    const body = await request.json();
-    const cart = Array.isArray(body.cart)
-  ? body.cart
-  : Array.isArray(body.items)
-    ? body.items
-    : [];
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://saint-meridian.com';
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    const { items = [] } = await request.json();
 
-    const line_items = cart.map((item) => {
+    const line_items = items.map((item) => {
       const product = products[item.id];
-      if (!product) return null;
-      const size = ['S', 'M', 'L', 'XL', 'XXL'].includes(item.size) ? item.size : 'M';
+      if (!product) throw new Error('Invalid product.');
       return {
-        quantity: Math.max(1, Math.min(10, Number(item.qty) || 1)),
         price_data: {
           currency: 'usd',
-          unit_amount: product.price,
-          product_data: { name: `${product.name} / Size ${size}` }
-        }
+          product_data: {
+            name: `${product.name} / ${item.size || 'M'}`
+          },
+          unit_amount: product.price
+        },
+        quantity: 1
       };
-    }).filter(Boolean);
+    });
 
-    if (!line_items.length) return Response.json({ error: 'Cart is empty.' }, { status: 400 });
-
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    const origin = request.headers.get('origin') || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items,
-      success_url: `${siteUrl}/?success=true`,
-      cancel_url: `${siteUrl}/?canceled=true`,
-      shipping_address_collection: { allowed_countries: ['US'] }
+      success_url: `${origin}/?success=true`,
+      cancel_url: `${origin}/?canceled=true`
     });
 
     return Response.json({ url: session.url });
