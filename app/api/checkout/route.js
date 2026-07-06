@@ -1,46 +1,93 @@
 import Stripe from 'stripe';
+import { NextResponse } from 'next/server';
 
-const products = {
-  'saint-meridian-hoodie-black': { name: 'Saint Meridian Hoodie - Black', price: 8000 },
-  'saint-meridian-hoodie-white': { name: 'Saint Meridian Hoodie - White', price: 8000 },
-  'saint-meridian-shirt-black': { name: 'Saint Meridian T-Shirt - Black', price: 5000 },
-  'saint-meridian-shirt-white': { name: 'Saint Meridian T-Shirt - White', price: 5000 }
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+const allowedProducts = {
+  'Saint Meridian Hoodie - Black': {
+    name: 'Saint Meridian Hoodie - Black',
+    price: 80,
+    image: '/products/hoodie-black.jpg'
+  },
+  'Saint Meridian Hoodie - White': {
+    name: 'Saint Meridian Hoodie - White',
+    price: 80,
+    image: '/products/hoodie-white.jpg'
+  },
+  'Saint Meridian T-Shirt - Black': {
+    name: 'Saint Meridian T-Shirt - Black',
+    price: 50,
+    image: '/products/tee-black.jpg'
+  },
+  'Saint Meridian T-Shirt - White': {
+    name: 'Saint Meridian T-Shirt - White',
+    price: 50,
+    image: '/products/tee-white.jpg'
+  }
 };
 
 export async function POST(request) {
   try {
     if (!process.env.STRIPE_SECRET_KEY) {
-      return Response.json({ error: 'Stripe secret key is not set in Vercel.' }, { status: 500 });
+      return NextResponse.json(
+        { error: 'Stripe secret key is missing in Vercel environment variables.' },
+        { status: 500 }
+      );
     }
 
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-    const { items = [] } = await request.json();
+    const body = await request.json();
+    const items = Array.isArray(body?.items) ? body.items : [];
+
+    if (items.length === 0) {
+      return NextResponse.json(
+        { error: 'Your cart is empty.' },
+        { status: 400 }
+      );
+    }
+
+    const origin =
+      request.headers.get('origin') ||
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      'https://saint-meridian.com';
 
     const line_items = items.map((item) => {
-      const product = products[item.id];
-      if (!product) throw new Error('Invalid product.');
+      const product = allowedProducts[item.name];
+
+      if (!product) {
+        throw new Error(`Invalid product: ${item.name}`);
+      }
+
+      const size = item.size || 'M';
+
       return {
         price_data: {
           currency: 'usd',
           product_data: {
-            name: `${product.name} / ${item.size || 'M'}`
+            name: `${product.name} - Size ${size}`
           },
-          unit_amount: product.price
+          unit_amount: product.price * 100
         },
         quantity: 1
       };
     });
 
-    const origin = request.headers.get('origin') || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items,
-      success_url: `${origin}/?success=true`,
-      cancel_url: `${origin}/?canceled=true`
+      success_url: `${origin}?checkout=success`,
+      cancel_url: `${origin}?checkout=cancelled`,
+      billing_address_collection: 'auto',
+      shipping_address_collection: {
+        allowed_countries: ['US']
+      }
     });
 
-    return Response.json({ url: session.url });
+    return NextResponse.json({ url: session.url });
   } catch (error) {
-    return Response.json({ error: error.message || 'Checkout failed.' }, { status: 500 });
+    console.error('Checkout error:', error);
+    return NextResponse.json(
+      { error: error.message || 'Checkout failed.' },
+      { status: 500 }
+    );
   }
 }

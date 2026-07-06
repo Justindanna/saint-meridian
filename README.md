@@ -1,16 +1,18 @@
 # Saint Meridian
 
-GitHub-ready Next.js website using the exact product mockups you uploaded.
+GitHub-ready Next.js website with checkout fixed.
 
-Included:
-- Black hoodie mockup
-- White hoodie mockup
-- Black T-shirt mockup
-- White T-shirt mockup
-- Professional user-friendly customer support chat
-- T-shirts priced at $50
-- Hoodies priced at $80
-- Hero text: OFFICIAL DROP
-- Checkout API route preserved
+Checkout fix:
+- Rebuilt `/app/api/checkout/route.js`
+- Accepts cart items from the site
+- Sends correct prices to Stripe:
+  - T-shirts: $50
+  - Hoodies: $80
+- Uses the Vercel environment variable `STRIPE_SECRET_KEY`
+- Preserves the product mockups and professional support chat
+
+IMPORTANT:
+Make sure Vercel has this environment variable:
+`STRIPE_SECRET_KEY`
 
 Upload the extracted contents to GitHub, commit to `main`, then Vercel should redeploy automatically.

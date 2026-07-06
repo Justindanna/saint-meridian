@@ -50,9 +50,18 @@ export default function Home() {
         body: JSON.stringify({ items: cart })
       });
       const data = await response.json();
-      if (data?.url) window.location.href = data.url;
-      else alert('Checkout could not start. Please try again.');
-    } catch {
+
+      if (!response.ok) {
+        alert(data?.error || 'Checkout could not start. Please try again.');
+        return;
+      }
+
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        alert('Checkout could not start. Please try again.');
+      }
+    } catch (error) {
       alert('Checkout could not start. Please try again.');
     }
   };
