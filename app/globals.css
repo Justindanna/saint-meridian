@@ -173,7 +173,7 @@ button, select { font: inherit; }
   position: fixed;
   right: 28px;
   bottom: 28px;
-  z-index: 20;
+  z-index: 9999;
   border: 0;
   border-radius: 999px;
   background: #000;
@@ -183,28 +183,40 @@ button, select { font: inherit; }
   font-weight: 900;
   line-height: 1.05;
   box-shadow: 0 15px 45px rgba(0,0,0,.28);
+  cursor: pointer;
 }
 .support-pill span { font-size: 11px; }
 .support-chat {
   position: fixed;
   right: 28px;
   bottom: 104px;
-  z-index: 21;
-  width: min(340px, calc(100vw - 36px));
+  z-index: 10000;
+  width: min(365px, calc(100vw - 36px));
   background: #fff;
   color: #050505;
   border: 1px solid #dedbd3;
   border-radius: 22px;
   padding: 18px;
   box-shadow: 0 20px 60px rgba(0,0,0,.22);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+}
+.support-chat.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 .support-chat-head {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
   margin-bottom: 12px;
 }
+.support-chat-head div { display: grid; gap: 4px; }
+.support-chat-head small { color: #77736d; font-size: 11px; }
 .support-chat-head button {
   border: 0;
   background: #000;
@@ -217,18 +229,39 @@ button, select { font: inherit; }
 .support-chat p {
   color: #68645f;
   margin: 0 0 12px;
+  line-height: 1.45;
 }
-.support-chat button, .support-chat a {
-  display: block;
-  width: 100%;
+.quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+.quick-actions button {
   border: 1px solid #dedbd3;
   border-radius: 999px;
   background: #f4f3ef;
   color: #050505;
   text-align: center;
-  padding: 12px 14px;
+  padding: 10px 8px;
+  font-weight: 900;
+  cursor: pointer;
+}
+.support-chat textarea {
+  width: 100%;
+  border: 1px solid #dedbd3;
+  border-radius: 16px;
+  padding: 13px;
+  resize: vertical;
+  outline: none;
+  font: inherit;
+}
+.send-support {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 999px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  padding: 13px 14px;
   margin-top: 10px;
-  font-weight: 800;
+  font-weight: 900;
   cursor: pointer;
 }
 footer {

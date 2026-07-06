@@ -7,7 +7,7 @@ const products = [
     id: 'saint-meridian-hoodie-black',
     name: 'Saint Meridian Hoodie - Black',
     price: 80,
-    image: '/products/hoodie-black.jpg',
+    image: '/products/hoodie-black.jpg?v=4',
     description: 'Heavyweight black hoodie with the Saint Meridian mark.',
     colors: ['#f4f1ec', '#111111', '#d8d2c6']
   },
@@ -15,7 +15,7 @@ const products = [
     id: 'saint-meridian-hoodie-white',
     name: 'Saint Meridian Hoodie - White',
     price: 80,
-    image: '/products/hoodie-white.jpg',
+    image: '/products/hoodie-white.jpg?v=4',
     description: 'Heavyweight white hoodie with the Saint Meridian mark.',
     colors: ['#f4f1ec', '#e4e0d8', '#ffffff']
   },
@@ -23,7 +23,7 @@ const products = [
     id: 'saint-meridian-shirt-black',
     name: 'Saint Meridian T-Shirt - Black',
     price: 50,
-    image: '/products/tee-black.jpg',
+    image: '/products/tee-black.jpg?v=4',
     description: 'Clean black premium T-shirt with Saint Meridian branding.',
     colors: ['#f4f1ec', '#ded9cf', '#111111']
   },
@@ -31,7 +31,7 @@ const products = [
     id: 'saint-meridian-shirt-white',
     name: 'Saint Meridian T-Shirt - White',
     price: 50,
-    image: '/products/tee-white.jpg',
+    image: '/products/tee-white.jpg?v=4',
     description: 'Clean white premium T-shirt with Saint Meridian branding.',
     colors: ['#f4f1ec', '#e5e1d9', '#ffffff']
   }
@@ -40,6 +40,7 @@ const products = [
 export default function Home() {
   const [cart, setCart] = useState([]);
   const [supportOpen, setSupportOpen] = useState(false);
+  const [supportMessage, setSupportMessage] = useState('');
   const [sizes, setSizes] = useState({});
   const total = useMemo(() => cart.reduce((sum, item) => sum + item.price, 0), [cart]);
 
@@ -130,20 +131,38 @@ export default function Home() {
         <p>Ask about sizes, order numbers, delivery timing, checkout, returns, and product details.</p>
       </section>
 
-      <button className="support-pill" onClick={() => setSupportOpen(!supportOpen)} aria-expanded={supportOpen} aria-controls="support-chat">Customer Support<br /><span>Chat with us</span></button>
-      {supportOpen && (
-        <div className="support-chat" id="support-chat" role="dialog" aria-label="Customer support chat">
-          <div className="support-chat-head">
+      <button
+        type="button"
+        className="support-pill"
+        onClick={() => setSupportOpen((open) => !open)}
+        aria-expanded={supportOpen}
+        aria-controls="support-chat"
+      >
+        Customer Support<br /><span>Chat with us</span>
+      </button>
+
+      <div className={`support-chat ${supportOpen ? 'open' : ''}`} id="support-chat" role="dialog" aria-label="Customer support chat">
+        <div className="support-chat-head">
+          <div>
             <strong>Saint Meridian Support</strong>
-            <button onClick={() => setSupportOpen(false)} aria-label="Close customer support">×</button>
+            <small>Usually replies by email</small>
           </div>
-          <p>Hi — how can we help?</p>
-          <button onClick={() => alert('Sizing help: T-shirts and hoodies run true to size. Choose your normal size, or size up for an oversized fit.')}>Sizing help</button>
-          <button onClick={() => alert('Order help: After checkout, use your Stripe receipt email and order number for support.')}>Order help</button>
-          <button onClick={() => alert('Delivery timing: Shipping updates will be sent to the email used at checkout.')}>Delivery timing</button>
-          <a href="mailto:support@saint-meridian.com?subject=Saint%20Meridian%20Support">Email support</a>
+          <button type="button" onClick={() => setSupportOpen(false)} aria-label="Close customer support">×</button>
         </div>
-      )}
+        <p>Hi — ask about sizes, orders, delivery, checkout, returns, or product details.</p>
+        <div className="quick-actions">
+          <button type="button" onClick={() => setSupportMessage('I need help choosing my size.')}>Sizing</button>
+          <button type="button" onClick={() => setSupportMessage('I need help with my order number.')}>Order #</button>
+          <button type="button" onClick={() => setSupportMessage('I have a delivery timing question.')}>Delivery</button>
+        </div>
+        <textarea
+          value={supportMessage}
+          onChange={(event) => setSupportMessage(event.target.value)}
+          placeholder="Type your question here..."
+          rows="4"
+        />
+        <a className="send-support" href={`mailto:support@saint-meridian.com?subject=Saint%20Meridian%20Support&body=${encodeURIComponent(supportMessage || 'Hi Saint Meridian Support, I need help with:')}`}>Send message</a>
+      </div>
       <footer>© 2026 Saint Meridian. All rights reserved.</footer>
     </main>
   );
