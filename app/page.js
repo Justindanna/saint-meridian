@@ -28,8 +28,8 @@ export default function Home() {
   const reply = (text) => {
     const lower = text.toLowerCase();
 
-    if (lower.includes('size') || lower.includes('fit') || lower.includes('small') || lower.includes('medium') || lower.includes('large') || lower.includes('xl')) {
-      return 'I’d be happy to help with sizing. Tell me your height, weight, and whether you prefer a regular or oversized fit, and I’ll recommend the best size.';
+    if (lower.includes('size') || lower.includes('sizes') || lower.includes('shirt sizes') || lower.includes('what size') || lower.includes('fit') || lower.includes('small') || lower.includes('medium') || lower.includes('large') || lower.includes('xl')) {
+      return 'We sell shirts and hoodies in Small, Medium, Large, XL, and XXL. I’d be happy to help recommend a size — tell me your height, weight, and whether you prefer a regular or oversized fit.';
     }
 
     if (lower.includes('order') || lower.includes('tracking') || lower.includes('track') || lower.includes('status') || lower.includes('number')) {

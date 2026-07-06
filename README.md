@@ -2,13 +2,12 @@
 
 GitHub-ready Next.js website.
 
-Latest update:
-- Customer service agent is simple, friendly, and professional
+Latest customer service update:
+- Customer service can answer: "What size shirts do you sell?"
+- Answer: Small, Medium, Large, XL, and XXL
+- Support agent stays simple, friendly, and professional
 - No preset customer service buttons
-- Agent answers sizing, order numbers, shipping, delivery time, returns, payments, and product questions
-- Returns message states items cannot be returned if worn, washed, damaged, or altered
-- Product mockups preserved
-- Checkout fix preserved
+- Checkout and product mockups preserved
 - T-shirts remain $50
 - Hoodies remain $80
 
