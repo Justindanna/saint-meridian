@@ -1,14 +1,16 @@
-# Saint Meridian Official Drop
+# Saint Meridian
 
-GitHub-ready Next.js site.
+GitHub-ready Next.js website based on the approved mockup.
 
-Updates included:
-- Same layout
-- OFFICIAL DROP hero text
-- T-shirts set to $50
-- Hoodies set to $80
-- Customer Support button now opens a support panel
-- White T-shirt product image cleaned so the support button is not baked into the picture
-- Product images exported at higher resolution
+Included:
+- Same polished black and white layout
+- Professional user-friendly customer support chat
+- Working support button
+- White T-shirt image included
+- Clear product images in `/public/products`
+- T-shirts priced at $50
+- Hoodies priced at $80
+- Hero text: OFFICIAL DROP
+- Checkout API route preserved
 
-Upload the extracted files/folders to your GitHub repository and commit to main. Vercel should redeploy automatically.
+Upload the extracted files to GitHub, commit to `main`, and Vercel should redeploy automatically.
