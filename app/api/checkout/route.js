@@ -4,19 +4,45 @@ import { NextResponse } from 'next/server';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const allowedProducts = {
-  'Saint Meridian Hoodie - Black': { name: 'Saint Meridian Hoodie - Black', price: 80 },
-  'Saint Meridian Hoodie - White': { name: 'Saint Meridian Hoodie - White', price: 80 },
-  'Saint Meridian T-Shirt - Black': { name: 'Saint Meridian T-Shirt - Black', price: 50 },
-  'Saint Meridian T-Shirt - White': { name: 'Saint Meridian T-Shirt - White', price: 50 }
+  'Saint Meridian Hoodie - Black': {
+    name: 'Saint Meridian Hoodie - Black',
+    price: 80,
+    image: '/products/hoodie-black.jpg'
+  },
+  'Saint Meridian Hoodie - White': {
+    name: 'Saint Meridian Hoodie - White',
+    price: 80,
+    image: '/products/hoodie-white.jpg'
+  },
+  'Saint Meridian T-Shirt - Black': {
+    name: 'Saint Meridian T-Shirt - Black',
+    price: 50,
+    image: '/products/tee-black.jpg'
+  },
+  'Saint Meridian T-Shirt - White': {
+    name: 'Saint Meridian T-Shirt - White',
+    price: 50,
+    image: '/products/tee-white.jpg'
+  }
 };
 
 export async function POST(request) {
   try {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return NextResponse.json(
+        { error: 'Stripe secret key is missing in Vercel environment variables.' },
+        { status: 500 }
+      );
+    }
+
     const body = await request.json();
     const items = Array.isArray(body?.items) ? body.items : [];
 
-    if (!items.length) {
-      return NextResponse.json({ error: 'Your cart is empty.' }, { status: 400 });
+    if (items.length === 0) {
+      return NextResponse.json(
+        { error: 'Your cart is empty.' },
+        { status: 400 }
+      );
     }
 
     const origin =
@@ -26,7 +52,10 @@ export async function POST(request) {
 
     const cleanItems = items.map((item) => {
       const product = allowedProducts[item.name];
-      if (!product) throw new Error(`Invalid product: ${item.name}`);
+
+      if (!product) {
+        throw new Error(`Invalid product: ${item.name}`);
+      }
 
       return {
         name: product.name,

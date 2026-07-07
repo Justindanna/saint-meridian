@@ -5,6 +5,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 let cachedStoreId = null;
 
+function normalizeText(value) {
+  return String(value || '').trim().toLowerCase();
+}
+
 async function getPrintfulStoreId() {
   if (cachedStoreId) return cachedStoreId;
 
@@ -14,13 +18,14 @@ async function getPrintfulStoreId() {
     }
   });
 
-  const data = await res.json();
+  const data = await res.json().catch(() => null);
 
   if (!res.ok) {
     throw new Error(data?.error?.message || data?.error || 'Could not get Printful store ID');
   }
 
-  const store = data.result.find((s) => s.name === 'Basic T-Shirts') || data.result[0];
+  const stores = Array.isArray(data?.result) ? data.result : [];
+  const store = stores.find((s) => s.name === 'Basic T-Shirts') || stores[0];
 
   if (!store?.id) {
     throw new Error('Printful store ID not found');
@@ -52,11 +57,30 @@ async function printfulFetch(path, options = {}) {
   return data;
 }
 
+function variantMatchesSize(variant, requestedSize) {
+  const size = normalizeText(requestedSize);
+  const name = normalizeText(variant?.name);
+  const variantSize = normalizeText(variant?.size);
+  const externalVariantName = normalizeText(variant?.external_variant_name);
+
+  return (
+    variantSize === size ||
+    externalVariantName === size ||
+    name === size ||
+    name.endsWith(` / ${size}`) ||
+    name.endsWith(`/${size}`) ||
+    name.endsWith(` ${size}`) ||
+    name.includes(` / ${size} /`) ||
+    name.includes(` size ${size}`)
+  );
+}
+
 async function getSyncVariantId(productName, size) {
   const products = await printfulFetch('/store/products');
+  const productList = Array.isArray(products?.result) ? products.result : [];
 
-  const product = products.result.find(
-    (p) => p.name.trim().toLowerCase() === productName.trim().toLowerCase()
+  const product = productList.find(
+    (p) => normalizeText(p.name) === normalizeText(productName)
   );
 
   if (!product) {
@@ -64,24 +88,17 @@ async function getSyncVariantId(productName, size) {
   }
 
   const details = await printfulFetch(`/store/products/${product.id}`);
+  const variants = Array.isArray(details?.result?.sync_variants)
+    ? details.result.sync_variants
+    : [];
 
-  const requestedSize = String(size).trim().toLowerCase();
-
-  const variant = details.result.sync_variants.find((v) => {
-    const name = String(v.name || '').toLowerCase();
-    const variantSize = String(v.size || '').toLowerCase();
-
-    return (
-      variantSize === requestedSize ||
-      name.includes(` / ${requestedSize}`) ||
-      name.endsWith(`/${requestedSize}`) ||
-      name.endsWith(` ${requestedSize}`) ||
-      name.includes(`size ${requestedSize}`)
-    );
-  });
+  const variant = variants.find((v) => variantMatchesSize(v, size));
 
   if (!variant) {
-    throw new Error(`Printful size not found: ${productName} / ${size}`);
+    const available = variants.map((v) => v.name || v.size || v.id).join(', ');
+    throw new Error(
+      `Printful size not found: ${productName} / ${size}. Available variants: ${available}`
+    );
   }
 
   return variant.id;
@@ -112,7 +129,7 @@ export async function POST(request) {
     const customer = fullSession.customer_details;
     const address = customer?.address;
 
-    if (!cart.length) {
+    if (!Array.isArray(cart) || !cart.length) {
       throw new Error('Missing cart metadata.');
     }
 
