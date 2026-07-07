@@ -60,9 +60,16 @@ async function getSyncVariantId(productName, size) {
   if (!product) throw new Error(`Printful product not found: ${productName}`);
 
   const details = await printfulFetch(`/store/products/${product.id}`);
+const variant = details.result.sync_variants.find((v) => {
+  const variantName = v.name.toLowerCase();
+  const requestedSize = size.toLowerCase();
 
-  const variant = details.result.sync_variants.find((v) =>
-    v.name.toLowerCase().includes(`/${size.toLowerCase()}`)
+  return (
+    variantName.endsWith(` / ${requestedSize}`) ||
+    variantName.includes(` ${requestedSize}`) ||
+    variantName.includes(`/${requestedSize}`)
+  );
+});
   );
 
   if (!variant) throw new Error(`Printful size not found: ${productName} / ${size}`);
