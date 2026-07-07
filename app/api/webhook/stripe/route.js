@@ -148,7 +148,7 @@ export async function POST(request) {
     await printfulFetch('/orders', {
       method: 'POST',
       body: JSON.stringify({
-        external_id: session.id,
+        external_id: `stripe_${session.id.slice(-24)}`,
         confirm: true,
         recipient: {
           name: customer.name,
