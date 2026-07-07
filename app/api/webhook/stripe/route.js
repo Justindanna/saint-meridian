@@ -22,7 +22,9 @@ async function getPrintfulStoreId() {
 
   const store = data.result.find((s) => s.name === 'Basic T-Shirts') || data.result[0];
 
-  if (!store?.id) throw new Error('Printful store ID not found');
+  if (!store?.id) {
+    throw new Error('Printful store ID not found');
+  }
 
   cachedStoreId = store.id;
   return cachedStoreId;
@@ -57,22 +59,30 @@ async function getSyncVariantId(productName, size) {
     (p) => p.name.trim().toLowerCase() === productName.trim().toLowerCase()
   );
 
-  if (!product) throw new Error(`Printful product not found: ${productName}`);
+  if (!product) {
+    throw new Error(`Printful product not found: ${productName}`);
+  }
 
   const details = await printfulFetch(`/store/products/${product.id}`);
-const variant = details.result.sync_variants.find((v) => {
-  const variantName = v.name.toLowerCase();
-  const requestedSize = size.toLowerCase();
 
-  return (
-    variantName.endsWith(` / ${requestedSize}`) ||
-    variantName.includes(` ${requestedSize}`) ||
-    variantName.includes(`/${requestedSize}`)
-  );
-});
-  );
+  const requestedSize = String(size).trim().toLowerCase();
 
-  if (!variant) throw new Error(`Printful size not found: ${productName} / ${size}`);
+  const variant = details.result.sync_variants.find((v) => {
+    const name = String(v.name || '').toLowerCase();
+    const variantSize = String(v.size || '').toLowerCase();
+
+    return (
+      variantSize === requestedSize ||
+      name.includes(` / ${requestedSize}`) ||
+      name.endsWith(`/${requestedSize}`) ||
+      name.endsWith(` ${requestedSize}`) ||
+      name.includes(`size ${requestedSize}`)
+    );
+  });
+
+  if (!variant) {
+    throw new Error(`Printful size not found: ${productName} / ${size}`);
+  }
 
   return variant.id;
 }
@@ -102,7 +112,10 @@ export async function POST(request) {
     const customer = fullSession.customer_details;
     const address = customer?.address;
 
-    if (!cart.length) throw new Error('Missing cart metadata.');
+    if (!cart.length) {
+      throw new Error('Missing cart metadata.');
+    }
+
     if (!customer?.name || !customer?.email || !address) {
       throw new Error('Missing customer shipping info.');
     }
@@ -140,5 +153,3 @@ export async function POST(request) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
-
-      
