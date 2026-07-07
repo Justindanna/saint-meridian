@@ -3,12 +3,40 @@ import { NextResponse } from 'next/server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+let cachedStoreId = null;
+
+async function getPrintfulStoreId() {
+  if (cachedStoreId) return cachedStoreId;
+
+  const res = await fetch('https://api.printful.com/stores', {
+    headers: {
+      Authorization: `Bearer ${process.env.PRINTFUL_API_KEY}`
+    }
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data?.error?.message || data?.error || 'Could not get Printful store ID');
+  }
+
+  const store = data.result.find((s) => s.name === 'Basic T-Shirts') || data.result[0];
+
+  if (!store?.id) throw new Error('Printful store ID not found');
+
+  cachedStoreId = store.id;
+  return cachedStoreId;
+}
+
 async function printfulFetch(path, options = {}) {
+  const storeId = await getPrintfulStoreId();
+
   const res = await fetch(`https://api.printful.com${path}`, {
     ...options,
     headers: {
       Authorization: `Bearer ${process.env.PRINTFUL_API_KEY}`,
       'Content-Type': 'application/json',
+      'X-PF-Store-Id': String(storeId),
       ...(options.headers || {})
     }
   });
@@ -29,9 +57,7 @@ async function getSyncVariantId(productName, size) {
     (p) => p.name.trim().toLowerCase() === productName.trim().toLowerCase()
   );
 
-  if (!product) {
-    throw new Error(`Printful product not found: ${productName}`);
-  }
+  if (!product) throw new Error(`Printful product not found: ${productName}`);
 
   const details = await printfulFetch(`/store/products/${product.id}`);
 
@@ -39,9 +65,7 @@ async function getSyncVariantId(productName, size) {
     v.name.toLowerCase().includes(`/${size.toLowerCase()}`)
   );
 
-  if (!variant) {
-    throw new Error(`Printful size not found: ${productName} / ${size}`);
-  }
+  if (!variant) throw new Error(`Printful size not found: ${productName} / ${size}`);
 
   return variant.id;
 }
@@ -109,3 +133,5 @@ export async function POST(request) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
+
+      
